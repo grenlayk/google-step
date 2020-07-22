@@ -1,2 +1,6 @@
 target/
 .idea
+.DS_Store
+*.iml
+TOMCAT_FOLDER
+SERVLET_NAME
