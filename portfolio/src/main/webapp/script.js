@@ -14,6 +14,12 @@
 
 async function getMessage() {
   const response = await fetch('/data');
-  const quote = await response.text();
-  document.getElementById('message-container').innerHTML = quote;
+  const serverMessages = await response.json();
+  console.log(serverMessages);
+
+  const messages = document.getElementById('message-container');
+  messages.innerHTML = '';
+  for (var i = 0; i < serverMessages.length; ++i) {
+    messages.innerHTML += serverMessages[i].mes;
+  }
 }
