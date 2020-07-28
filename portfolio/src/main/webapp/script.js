@@ -19,7 +19,13 @@ async function getMessage() {
 
   const messages = document.getElementById('message-container');
   messages.innerHTML = '';
-  for (var i = 0; i < serverMessages.length; ++i) {
-    messages.innerHTML += serverMessages[i].mes;
+  for (const message of serverMessages) {
+    messages.appendChild(createHeaderElement(message))
   }
+}
+
+function createHeaderElement(text) {
+  const heElement = document.createElement('h3');
+  heElement.innerText = text;
+  return heElement;
 }
