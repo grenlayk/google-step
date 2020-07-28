@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import com.google.sps.data.UserMessage;
+import java.util.List;
 import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,24 +29,38 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private static ArrayList<String> messages = new ArrayList<String>();
-  static {
-    messages.add("Hello, Olga!");
-    messages.add("Hello, Tomasz!");
-    messages.add("Hello, Bartosz!");
-  }
-  
+  private final List<UserMessage> messages = new ArrayList<UserMessage>();
+  private String logMessage = "OK";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String json = convertToJsonUsingGson(messages);
-    response.setContentType("application/json;");
+    response.setContentType("application/json");
+    String json = new Gson().toJson(this);
     response.getWriter().println(json);
   }
 
-  private String convertToJsonUsingGson(ArrayList<String> serverMessages) {
-    Gson gson = new Gson();
-    return gson.toJson(serverMessages);
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    // // Get the input from the form.
+    String userName = request.getParameter("user_name");
+    String userMessage = request.getParameter("user_message");
+
+    UserMessage curMessage = new UserMessage();
+    curMessage.addNew(userName, userMessage);
+    logMessage = "OK";
+
+    if (!curMessage.isCorrect()) {
+      System.err.println("Empty name or message field");
+      logMessage = "Empty name or message field";
+      response.sendRedirect("/chat.html");
+      return;
+    }
+
+    messages.add(curMessage);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/chat.html");
   }
-  
+
 }

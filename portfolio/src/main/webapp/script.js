@@ -14,18 +14,28 @@
 
 async function getMessage() {
   const response = await fetch('/data');
-  const serverMessages = await response.json();
+  const json = await response.json();
+
+  const serverMessages = json.messages;
+  const logMessage = json.logMessage;
   console.log(serverMessages);
 
-  const messages = document.getElementById('message-container');
-  messages.innerHTML = '';
+  if (logMessage != "OK") {
+      const warn = document.getElementById('warning-container');
+      warn.innerHTML = '';
+      warn.appendChild(createElement("Warning: " + logMessage, 'p'));
+  }
+  
+  const messagesEl = document.getElementById('users-messages');
+  messagesEl.innerHTML = '';
   for (const message of serverMessages) {
-    messages.appendChild(createHeaderElement(message))
+    messagesEl.appendChild(createElement(message.userName, 'h3'));
+    messagesEl.appendChild(createElement(message.userMessage, 'p'));
   }
 }
 
-function createHeaderElement(text) {
-  const heElement = document.createElement('h3');
-  heElement.innerText = text;
-  return heElement;
+function createElement(text, type) {
+  const element = document.createElement(type);
+  element.innerText = text;
+  return element;
 }

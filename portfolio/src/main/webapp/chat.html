@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body onload="getMessage()">
+    <div id="content">
+      <h1>Chat</h1>
+      <p> Users' messages:<p>
+      <hr>
+      <div id="users-messages"> </div>
+      <hr>
+      <p>Leave your message:</p>
+      <form action="/data" method="post">
+        <ul>
+        <li>
+          <label for="name">Your name:</label>
+          <input type="text" id="name" name="user_name" value="">
+        </li>
+        <li>
+          <label for="msg">Message:</label>
+          <textarea id="msg" name="user_message">Hello!</textarea>
+        </li>
+        <button type="submit">Send</button>
+        </ul>
+      </form>
+      <div id="warning-container"></div>
+    </div>
+  </body>
+</html>
