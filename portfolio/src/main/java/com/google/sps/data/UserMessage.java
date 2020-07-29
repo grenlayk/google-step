@@ -17,32 +17,40 @@ package com.google.sps.data;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringEscapeUtils;
+import com.google.sps.data.UserMessageError;
 
 /**
  * Class representing the subtraction game, where players take turns subtracting from 21 to reach 0.
- *
+ * 
  * <p>Note: The private variables in this class are converted into JSON.
  */
 public class UserMessage {
 
   private String userName = "";
   private String userMessage = "Hello!";
-  private long id;
-  private long timestamp;
+  private long id = -1;
+  private long timestamp = -1;
 
   public UserMessage(String name, String message) {
-      this.userName = name;
-      this.userMessage = message;
+      this.userName = htmlFilter(name);
+      this.userMessage = htmlFilter(message);
   }
 
-  public boolean isCorrect() {
+  public UserMessage(String name, String message, long id, long timestamp) {
+      this.userName = htmlFilter(name);
+      this.userMessage = htmlFilter(message);
+      this.id = id;
+      this.timestamp = timestamp;
+  }
+
+  public UserMessageError check() {
     if (userName == null || isEmpty(userName)) {
-      return false;
+      return new UserMessageError("Empty username field");
     }
     if (userMessage == null || isEmpty(userMessage)) {
-      return false;
+      return new UserMessageError("Empty message field");
     }
-    return true;
+    return new UserMessageError("OK");
   }
 
   // Filter for special HTML characters to prevent command injection attack

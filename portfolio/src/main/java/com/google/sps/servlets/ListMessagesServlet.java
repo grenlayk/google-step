@@ -27,35 +27,36 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/new-message")
-public class NewMessageServlet extends HttpServlet {
+@WebServlet("/list-messages")
+public class ListMessagesServlet extends HttpServlet {
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Query query = new Query("userMessage").addSort("timestamp", SortDirection.DESCENDING);
 
-    String userName = request.getParameter("user_name");
-    String userMessage = request.getParameter("user_message");
-    long timestamp = System.currentTimeMillis();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
 
-    UserMessage curMessage = new UserMessage(userName, userMessage);
+    List<UserMessage> messages = new ArrayList<>();
 
-    if (curMessage.check().getError() != "OK") {
-      System.err.println(curMessage.check().getError());
-    } else {
-      Entity messageEntity = new Entity("userMessage");
-      messageEntity.setProperty("userName", userName);
-      messageEntity.setProperty("userMessage", userMessage);
-      messageEntity.setProperty("timestamp", timestamp);
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String userName = (String) entity.getProperty("userName");
+      String userMessage = (String) entity.getProperty("userMessage");
+      long timestamp = (long) entity.getProperty("timestamp");
 
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(messageEntity);
+      UserMessage message = new UserMessage(userName, userMessage, id, timestamp);
+      messages.add(message);
     }
 
-    // Redirect back to the HTML page.
-    response.sendRedirect("/chat.html");
-  }
+    Gson gson = new Gson();
 
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(messages));
+  }
 }
