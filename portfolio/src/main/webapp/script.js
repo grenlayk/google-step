@@ -21,9 +21,9 @@ async function getMessage() {
   console.log(serverMessages);
 
   if (logMessage != "OK") {
-      const warn = document.getElementById('warning-container');
-      warn.innerHTML = '';
-      warn.appendChild(createElement("Warning: " + logMessage, 'p'));
+    const warn = document.getElementById('warning-container');
+    warn.innerHTML = '';
+    warn.appendChild(createElement("Warning: " + logMessage, 'p'));
   }
   
   const messagesEl = document.getElementById('users-messages');

@@ -26,14 +26,13 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class UserMessage {
 
   private String userName = "";
-
   private String userMessage = "Hello!";
+  private long id;
+  private long timestamp;
 
-  private boolean correctMes = true;
-
-  public void addNew(String name, String message) {
-      userName = name;
-      userMessage = message;
+  public UserMessage(String name, String message) {
+      this.userName = name;
+      this.userMessage = message;
   }
 
   public boolean isCorrect() {
