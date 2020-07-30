@@ -38,20 +38,33 @@ public class ListMessagesServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query("userMessage").addSort("timestamp", SortDirection.DESCENDING);
+    int maxMessages = 5;
+
+    String maxParam = request.getParameter("max_messages");
+    try {
+        maxMessages = Integer.parseInt(maxParam); 
+    } 
+    catch(Exception e) {
+        System.out.println("Wrong input");
+    }
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
     List<UserMessage> messages = new ArrayList<>();
+    int messageNum = 0;
 
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      String userName = (String) entity.getProperty("userName");
-      String userMessage = (String) entity.getProperty("userMessage");
-      long timestamp = (long) entity.getProperty("timestamp");
+      if (messageNum < maxMessages) {
+        long id = entity.getKey().getId();
+        String userName = (String) entity.getProperty("userName");
+        String userMessage = (String) entity.getProperty("userMessage");
+        long timestamp = (long) entity.getProperty("timestamp");
 
-      UserMessage message = new UserMessage(userName, userMessage, id, timestamp);
-      messages.add(message);
+        UserMessage message = new UserMessage(userName, userMessage, id, timestamp);
+        messages.add(message);
+      }
+      ++messageNum;
     }
 
     Gson gson = new Gson();

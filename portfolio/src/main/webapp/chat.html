@@ -9,7 +9,14 @@
   <body onload="loadMessages()">
     <div id="content">
       <h1>Chat</h1>
-      <p> Users' messages:<p>
+      <p> Users' messages:
+      <label for="max">Choose a number of messages:</label>
+          <select name="max" id="max" onchange="loadMessages()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+      <p>
       <hr>
       <div id="users-messages"> </div>
       <hr>
@@ -17,11 +24,11 @@
       <form action="/new-message" method="post">
         <ul>
         <li>
-          <label for="name">Your name:</label>
+          <label for="name" class="form">Your name:</label>
           <input type="text" id="name" name="user_name" value="">
         </li>
         <li>
-          <label for="msg">Message:</label>
+          <label for="msg" class="form">Message:</label>
           <textarea id="msg" name="user_message">Hello!</textarea>
         </li>
         <button type="submit">Send</button>

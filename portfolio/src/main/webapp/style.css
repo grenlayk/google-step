@@ -48,7 +48,7 @@ form li + li {
   margin-top: 1em;
 }
 
-label {
+label.form {
   /* Uniform size & alignment */
   display: inline-block;
   width: 90px;

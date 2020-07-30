@@ -13,7 +13,10 @@
 // limitations under the License.
 
 async function loadMessages() {
-  const response = await fetch('/list-messages');
+  const maxEl = document.getElementById('max');
+  const maxText = maxEl.options[maxEl.selectedIndex].text;
+
+  const response = await fetch('/list-messages?max_messages=' + maxText);
   const serverMessages = await response.json();
 
   const messagesEl = document.getElementById('users-messages');
@@ -23,20 +26,6 @@ async function loadMessages() {
     messagesEl.appendChild(createElement(message.userMessage, 'p'));
   }
 }
-
-// async function sendMessage() {
-//   const response = await fetch('/new-message');
-//   const json = await response.json();
-//   const { messages : serverMessages, logMessage } = json;
-
-//   console.log(serverMessages);
-
-//   if (logMessage != "OK") {
-//     const warn = document.getElementById('warning-container');
-//     warn.innerHTML = '';
-//     warn.appendChild(createElement("Warning: " + logMessage, 'p'));
-//   }
-// }
 
 function createElement(text, type) {
   const element = document.createElement(type);
