@@ -2,13 +2,38 @@
   margin-left: auto;
   margin-right: auto;
   width: 650px;
-  font-family: Verdana,sans-serif;
   line-height: 1.5;
-  font-size: 15px;
+  font-size: 16px;
+}
+
+body {
+    margin-left: auto;
+    margin-right: auto;
+    width: 650px;
+    font-family: Verdana,sans-serif;
+    background-color: #5CDB95;
 }
 
 a {
   text-decoration: none;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: #05386B;
+}
+
+a:hover, a:active {
+    color:#EDF5EF;
+}
+
+p, ul, a:link, a:visited {
+  color:#05386B;
+}
+
+hr {
+  border-top: 3px solid #05386B;
+  border-radius: 1px;
 }
 
 .images {
@@ -24,7 +49,7 @@ a {
 }
 
 .images img:hover {
-  border: 2px solid #e6ffe6;
+  border: 2px solid #8EE4AF;
 }
 
 
@@ -34,11 +59,11 @@ form {
   width: 400px;
   /* Form outline */
   padding: 1em;
-  border: 1px solid #CCC;
+  border: 1px solid #05386B;
   border-radius: 1em;
 }
 
-ul {
+ul.myform {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -48,7 +73,7 @@ form li + li {
   margin-top: 1em;
 }
 
-label.form {
+label.myform {
   /* Uniform size & alignment */
   display: inline-block;
   width: 90px;
@@ -66,13 +91,13 @@ textarea {
   box-sizing: border-box;
 
   /* Match form field borders */
-  border: 1px solid #999;
+  border: 1px solid #05386B;
 }
 
 input:focus, 
 textarea:focus {
   /* Additional highlight for focused elements */
-  border-color: #000;
+  border-color: #05386B;
 }
 
 textarea {
@@ -89,7 +114,37 @@ textarea {
 }
 
 button {
+  color: #05386B;
+  background-color: #EDF5EF;
   /* This extra margin represent roughly the same space as the space
      between the labels and their text fields */
   margin-left: .5em;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #5CDB95;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #05386B;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #8EE4AF;
+  color: #05386B;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #379683;
+  color:#05386B;
 }

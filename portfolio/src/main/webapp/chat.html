@@ -7,6 +7,12 @@
     <script src="script.js"></script>
   </head>
   <body onload="loadMessages()">
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="about.html"> About</a>
+        <a class="active" href="chat.html">Chat</a>
+        <a href="tests.html">Dev playground</a>
+    </div>
     <div id="content">
       <h1>Chat</h1>
       <p> Users' messages:
@@ -22,13 +28,13 @@
       <hr>
       <p>Leave your message:</p>
       <form action="/new-message" method="post">
-        <ul>
+        <ul class="myform">
         <li>
-          <label for="name" class="form">Your name:</label>
+          <label for="name" class="myform">Your name:</label>
           <input type="text" id="name" name="user_name" value="">
         </li>
         <li>
-          <label for="msg" class="form">Message:</label>
+          <label for="msg" class="myform">Message:</label>
           <textarea id="msg" name="user_message">Hello!</textarea>
         </li>
         <button type="submit">Send</button>
