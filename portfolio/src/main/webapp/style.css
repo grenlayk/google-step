@@ -9,9 +9,10 @@
 body {
     margin-left: auto;
     margin-right: auto;
-    width: 650px;
+    width: 720px;
     font-family: Verdana,sans-serif;
     background-color: #5CDB95;
+    color: #05386B;
 }
 
 a {
@@ -19,16 +20,16 @@ a {
 }
 
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, strong {
   color: #05386B;
-}
-
-a:hover, a:active {
-    color:#EDF5EF;
 }
 
 p, ul, a:link, a:visited {
   color:#05386B;
+}
+
+a:hover {
+    color: #EDF5EF;
 }
 
 hr {
@@ -53,10 +54,10 @@ hr {
 }
 
 
-form {
+form.myform {
   /* Center the form on the page */
   margin: 0 auto;
-  width: 400px;
+  width: 430px;
   /* Form outline */
   padding: 1em;
   border: 1px solid #05386B;
@@ -73,11 +74,14 @@ form li + li {
   margin-top: 1em;
 }
 
-label.myform {
-  /* Uniform size & alignment */
-  display: inline-block;
-  width: 90px;
-  text-align: right;
+
+label.myform
+{
+   display: inline;
+   float: left;
+   text-align: right;
+   width: 6em;
+   margin-right: 1em;
 }
 
 input, 
@@ -89,6 +93,7 @@ textarea {
   /* Uniform text field size */
   width: 300px;
   box-sizing: border-box;
+
 
   /* Match form field borders */
   border: 1px solid #05386B;
@@ -108,23 +113,36 @@ textarea {
   height: 5em;
 }
 
-.button {
-  /* Align buttons with the text fields */
-  padding-left: 90px; /* same size as the label elements */
+button {
+  background-color: #05386B; /* Green */
+  border: none;
+  color: #EDF5EF;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
 
-button {
-  color: #05386B;
-  background-color: #EDF5EF;
+button.myform {
+  background-color: #05386B; /* Green */
+  border: none;
+  color: #EDF5EF;
+  padding: 12px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
   /* This extra margin represent roughly the same space as the space
      between the labels and their text fields */
-  margin-left: .5em;
+  margin-right: .5em;
 }
 
 /* Add a black background color to the top navigation */
 .topnav {
   background-color: #5CDB95;
   overflow: hidden;
+  font-size: 20px;
 }
 
 /* Style the links inside the navigation bar */
@@ -132,9 +150,9 @@ button {
   float: left;
   color: #05386B;
   text-align: center;
-  padding: 14px 16px;
+  padding: 20px 26px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 22px;
 }
 
 /* Change the color of links on hover */

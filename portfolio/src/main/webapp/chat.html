@@ -12,6 +12,7 @@
         <a href="about.html"> About</a>
         <a class="active" href="chat.html">Chat</a>
         <a href="tests.html">Dev playground</a>
+        <a href="robotics.html">Robotics</a>
     </div>
     <div id="content">
       <h1>Chat</h1>
@@ -26,8 +27,11 @@
       <hr>
       <div id="users-messages"> </div>
       <hr>
+      <form action="/delete-messages" method="post" >
+         <button type="submit" class="myform">Delete messages</button>
+      </form>
       <p>Leave your message:</p>
-      <form action="/new-message" method="post">
+      <form action="/new-message" method="post" class="myform">
         <ul class="myform">
         <li>
           <label for="name" class="myform">Your name:</label>
@@ -37,7 +41,8 @@
           <label for="msg" class="myform">Message:</label>
           <textarea id="msg" name="user_message">Hello!</textarea>
         </li>
-        <button type="submit">Send</button>
+        <br>
+        <button type="submit" class="myform">Send</button>
         </ul>
       </form>
       <div id="warning-container"></div>
