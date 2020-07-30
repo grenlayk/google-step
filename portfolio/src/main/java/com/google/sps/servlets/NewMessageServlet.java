@@ -29,21 +29,23 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/new-message")
 public class NewMessageServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    
     String userName = request.getParameter("user_name");
     String userMessage = request.getParameter("user_message");
     long timestamp = System.currentTimeMillis();
 
     UserMessage curMessage = new UserMessage(userName, userMessage);
+    String logMessage = curMessage.check().getError();
 
-    if (curMessage.check().getError() != "OK") {
-      System.err.println(curMessage.check().getError());
+    if (logMessage != null) {
+      System.err.println(logMessage);
+
+      response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, logMessage);
     } else {
       Entity messageEntity = new Entity("userMessage");
       messageEntity.setProperty("userName", userName);
@@ -52,10 +54,10 @@ public class NewMessageServlet extends HttpServlet {
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(messageEntity);
-    }
 
-    // Redirect back to the HTML page.
-    response.sendRedirect("/chat.html");
+      // Redirect back to the HTML page.
+      response.sendRedirect("/chat.html");
+    }
   }
 
 }

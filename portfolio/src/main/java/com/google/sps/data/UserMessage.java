@@ -31,16 +31,15 @@ public class UserMessage {
   private long id = -1;
   private long timestamp = -1;
 
-  public UserMessage(String name, String message) {
-      this.userName = htmlFilter(name);
-      this.userMessage = htmlFilter(message);
-  }
-
   public UserMessage(String name, String message, long id, long timestamp) {
       this.userName = htmlFilter(name);
       this.userMessage = htmlFilter(message);
       this.id = id;
       this.timestamp = timestamp;
+  }
+
+  public UserMessage(String name, String message) {
+      this(name, message, -1, -1);
   }
 
   public UserMessageError check() {
@@ -50,7 +49,7 @@ public class UserMessage {
     if (userMessage == null || isEmpty(userMessage)) {
       return new UserMessageError("Empty message field");
     }
-    return new UserMessageError("OK");
+    return new UserMessageError(null);
   }
 
   // Filter for special HTML characters to prevent command injection attack
