@@ -7,13 +7,19 @@
     <script src="script.js"></script>
   </head>
   <body>
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="about.html"> About</a>
+        <a href="chat.html">Chat</a>
+        <a class="active" href="tests.html">Dev playground</a>
+    </div>
     <div id="content">
       <h1>Dev playground</h1>
       
       <p>Click here to see a message:</p>
-      <button onclick="getMessage()">Get a message!</button>
+      <button onclick="loadMessages()">Get a message!</button>
       <br>
-      <div id="message-container"></div>
+      <div id="users-messages"></div>
     </div>
   </body>
 </html>

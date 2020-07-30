@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body onload="loadMessages()">
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="about.html"> About</a>
+        <a class="active" href="chat.html">Chat</a>
+        <a href="tests.html">Dev playground</a>
+    </div>
+    <div id="content">
+      <h1>Chat</h1>
+      <p> Users' messages:
+      <label for="max">Choose a number of messages:</label>
+          <select name="max" id="max" onchange="loadMessages()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+      <p>
+      <hr>
+      <div id="users-messages"> </div>
+      <hr>
+      <p>Leave your message:</p>
+      <form action="/new-message" method="post">
+        <ul class="myform">
+        <li>
+          <label for="name" class="myform">Your name:</label>
+          <input type="text" id="name" name="user_name" value="">
+        </li>
+        <li>
+          <label for="msg" class="myform">Message:</label>
+          <textarea id="msg" name="user_message">Hello!</textarea>
+        </li>
+        <button type="submit">Send</button>
+        </ul>
+      </form>
+      <div id="warning-container"></div>
+    </div>
+  </body>
+</html>
