@@ -22,12 +22,19 @@ async function loadMessages() {
   const messagesEl = document.getElementById('users-messages');
   messagesEl.innerHTML = '';
   for (const message of serverMessages) {
-    messagesEl.appendChild(createElement(message.userName, 'h3'));
-    messagesEl.appendChild(createElement(message.userMessage, 'p'));
+    const curMessage = document.createElement('p');
+    curMessage.appendChild(createMyElement(message.userName + ': ', 'b'));
+    curMessage.appendChild(createMyElement(message.userMessage, 'bdi'));
+
+    messagesEl.appendChild(curMessage);
   }
 }
 
-function createElement(text, type) {
+async function deleteMessages() {
+  const response = await fetch('/delete-messages');
+}
+
+function createMyElement(text, type) {
   const element = document.createElement(type);
   element.innerText = text;
   return element;
