@@ -175,3 +175,9 @@ button.myform {
   line-height: 30px;
   position: relative;
 }
+
+#map {
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}
