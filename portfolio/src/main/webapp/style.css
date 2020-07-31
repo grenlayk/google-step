@@ -177,7 +177,7 @@ button.myform {
 }
 
 #map {
-  border: thin solid black;
+  border: thin solid #8EE4AF;
   height: 500px;
   width: 500px;
 }
