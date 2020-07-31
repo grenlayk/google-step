@@ -11,8 +11,8 @@ body {
     margin-right: auto;
     width: 720px;
     font-family: Verdana,sans-serif;
-    background-color: #5CDB95;
-    color: #05386B;
+    background-color: #05386B;
+    color: #EDF5EF;
 }
 
 a {
@@ -21,19 +21,19 @@ a {
 
 
 h1, h2, h3, h4, h5, h6, strong {
-  color: #05386B;
+  color: #EDF5EF;
 }
 
 p, ul, a:link, a:visited {
-  color:#05386B;
+  color:#EDF5EF;
 }
 
 a:hover {
-    color: #EDF5EF;
+    color: #8EE4AF;
 }
 
 hr {
-  border-top: 3px solid #05386B;
+  border-top: 3px solid #EDF5EF;
   border-radius: 1px;
 }
 
@@ -60,7 +60,7 @@ form.myform {
   width: 430px;
   /* Form outline */
   padding: 1em;
-  border: 1px solid #05386B;
+  border: 1px solid #EDF5EF;
   border-radius: 1em;
 }
 
@@ -96,13 +96,13 @@ textarea {
 
 
   /* Match form field borders */
-  border: 1px solid #05386B;
+  border: 1px solid #EDF5EF;
 }
 
 input:focus, 
 textarea:focus {
   /* Additional highlight for focused elements */
-  border-color: #05386B;
+  border-color: #EDF5EF;
 }
 
 textarea {
@@ -114,7 +114,7 @@ textarea {
 }
 
 button {
-  background-color: #05386B; /* Green */
+  background-color: #5CDB95;
   border: none;
   color: #EDF5EF;
   padding: 15px 32px;
@@ -125,7 +125,7 @@ button {
 }
 
 button.myform {
-  background-color: #05386B; /* Green */
+  background-color: #5CDB95; 
   border: none;
   color: #EDF5EF;
   padding: 12px 32px;
@@ -140,7 +140,7 @@ button.myform {
 
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #5CDB95;
+  background-color: #05386B;
   overflow: hidden;
   font-size: 20px;
 }
@@ -148,7 +148,7 @@ button.myform {
 /* Style the links inside the navigation bar */
 .topnav a {
   float: left;
-  color: #05386B;
+  color: #EDF5EF;
   text-align: center;
   padding: 20px 26px;
   text-decoration: none;
@@ -158,11 +158,20 @@ button.myform {
 /* Change the color of links on hover */
 .topnav a:hover {
   background-color: #8EE4AF;
-  color: #05386B;
+  color: #EDF5EF;
 }
 
 /* Add a color to the active/current link */
 .topnav a.active {
-  background-color: #379683;
-  color:#05386B;
+  background-color: #5CDB95;
+  color:#EDF5EF;
+}
+
+.select
+{
+  display: inline-block;
+  width: 160px;
+  height: 34px;
+  line-height: 30px;
+  position: relative;
 }
