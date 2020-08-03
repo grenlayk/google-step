@@ -13,25 +13,25 @@
 // limitations under the License.
 
 async function loadMessages() {
-  const maxEl = document.getElementById('max');
+  const maxEl = document.getElementById("max");
   const maxText = maxEl.options[maxEl.selectedIndex].text;
 
-  const response = await fetch('/list-messages?max_messages=' + maxText);
+  const response = await fetch("/list-messages?max_messages=" + maxText);
   const serverMessages = await response.json();
 
-  const messagesEl = document.getElementById('users-messages');
-  messagesEl.innerHTML = '';
+  const messagesEl = document.getElementById("users-messages");
+  messagesEl.innerHTML = "";
   for (const message of serverMessages) {
-    const curMessage = document.createElement('p');
-    curMessage.appendChild(createMyElement(message.userName + ': ', 'b'));
-    curMessage.appendChild(createMyElement(message.userMessage, 'bdi'));
+    const curMessage = document.createElement("p");
+    curMessage.appendChild(createMyElement(message.userName + ": ", "b"));
+    curMessage.appendChild(createMyElement(message.userMessage, "bdi"));
 
     messagesEl.appendChild(curMessage);
   }
 }
 
 async function deleteMessages() {
-  const response = await fetch('/delete-messages');
+  const response = await fetch("/delete-messages");
 }
 
 function createMyElement(text, type) {
@@ -42,102 +42,102 @@ function createMyElement(text, type) {
 
 /** Creates a map and adds it to the page. */
 function createMap() {
-  var styleOptions = [
+  const styleOptions = [
+    {
+      featureType: "administrative.country",
+      elementType: "geometry.fill",
+      stylers: [
         {
-            "featureType": "administrative.country",
-            "elementType": "geometry.fill",
-            "stylers": [
-            {
-                "visibility": "off"
-            }
-            ]
+          visibility: "off",
         },
+      ],
+    },
+    {
+      featureType: "landscape.natural",
+      elementType: "geometry",
+      stylers: [
         {
-            "featureType": "landscape.natural",
-            "elementType": "geometry",
-            "stylers": [
-            {
-                "color": "#edf5ef"
-            }
-            ]
-        }
-        ];
-  var info = {
-      "costa_rica": {
-          "lat": 9.932955,
-          "lng": -84.079496,
-          "title": "Costa Rica",
-          "description": "World Robot Olympiad took place here in 2017"
-      },
-      "china": {
-          "lat": 39.915149, 
-          "lng": 116.384680,
-          "title": "China",
-          "description": "World Adolescent Robot Contest took place here in 2015"
-      },
-      "qatar": {
-          "lat": 25.293616, 
-          "lng": 51.517145,
-          "title": "Qatar",
-          "description": "World Robot Olympiad took place here in 2015"
-      },
-      "tailand": {
-          "lat": 18.799605, 
-          "lng": 98.981883,
-          "title": "Thailand",
-          "description": "World Robot Olympiad took place here in 2018"
-      },
-      "india": {
-          "lat": 28.626527, 
-          "lng": 77.192504,
-          "title": "India",
-          "description": "World Robot Olympiad took place here in 2016"
-      },
-      "philippines": {
-          "lat": 10.292572, 
-          "lng": 123.961117,
-          "title": "Philippines",
-          "description": "World Robot Olympiad Friendship Invitational took place here in 2018"
-      },
-      "indonesia": {
-          "lat": -6.210629, 
-          "lng": 106.826769,
-          "title": "Indonesia",
-          "description": "World Robot Olympiad took place here in 2013"
-      }
-  }
-  const countryEl = document.getElementById('country');
-  const countryValue = countryEl.options[countryEl.selectedIndex].value;
-  var mapOptions = {
-  zoom: 8,
-  center: {lat:info[countryValue].lat, lng: info[countryValue].lng},
-  styles: styleOptions
+          color: "#edf5ef",
+        },
+      ],
+    },
+  ];
+  const info = {
+    costa_rica: {
+      lat: 9.932955,
+      lng: -84.079496,
+      title: "Costa Rica",
+      description: "World Robot Olympiad took place here in 2017",
+    },
+    china: {
+      lat: 39.915149,
+      lng: 116.38468,
+      title: "China",
+      description: "World Adolescent Robot Contest took place here in 2015",
+    },
+    qatar: {
+      lat: 25.293616,
+      lng: 51.517145,
+      title: "Qatar",
+      description: "World Robot Olympiad took place here in 2015",
+    },
+    thailand: {
+      lat: 18.799605,
+      lng: 98.981883,
+      title: "Thailand",
+      description: "World Robot Olympiad took place here in 2018",
+    },
+    india: {
+      lat: 28.626527,
+      lng: 77.192504,
+      title: "India",
+      description: "World Robot Olympiad took place here in 2016",
+    },
+    philippines: {
+      lat: 10.292572,
+      lng: 123.961117,
+      title: "Philippines",
+      description:
+        "World Robot Olympiad Friendship Invitational took place here in 2018",
+    },
+    indonesia: {
+      lat: -6.210629,
+      lng: 106.826769,
+      title: "Indonesia",
+      description: "World Robot Olympiad took place here in 2013",
+    },
   };
-  const map = new google.maps.Map(
-      document.getElementById('map'),  
-      mapOptions
-  );
-  
-  for (var countryKey in info) {
-    addLandmark(
-      map, info[countryKey].lat, info[countryKey].lng, info[countryKey].title,
-      info[countryKey].description);
-  }
-  
-}
+  const countryEl = document.getElementById("country");
+  const countryValue = countryEl.options[countryEl.selectedIndex].value;
+  const mapOptions = {
+    zoom: 8,
+    center: { lat: info[countryValue].lat, lng: info[countryValue].lng },
+    styles: styleOptions,
+  };
+  const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+  for (const countryKey in info) {
+    addLandmark(
+      map,
+      info[countryKey].lat,
+      info[countryKey].lng,
+      info[countryKey].title,
+      info[countryKey].description
+    );
+  }
+}
 
 /** Adds a marker that shows an info window when clicked. */
 function addLandmark(map, lat, lng, title, description) {
   const marker = new google.maps.Marker({
-      position: {lat: lat, lng: lng}, 
-      map: map, 
-      title: title,
-      animation: google.maps.Animation.DROP,
-    });
+    position: { lat, lng },
+    map,
+    title,
+    animation: google.maps.Animation.DROP,
+  });
 
-  const infoWindow = new google.maps.InfoWindow({content: description});
-  marker.addListener('click', () => {
+  const infoWindow = new google.maps.InfoWindow({ content: description });
+  marker.addListener("click", () => {
     infoWindow.open(map, marker);
   });
 }
