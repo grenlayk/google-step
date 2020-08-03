@@ -143,6 +143,11 @@ button {
   font-size: 16px;
 }
 
+button a:hover {
+    color: #05386B;
+}
+
+
 button.myform {
   background-color: #5CDB95; 
   border: none;
