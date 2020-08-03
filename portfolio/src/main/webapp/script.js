@@ -42,9 +42,7 @@ function createMyElement(text, type) {
 
 /** Creates a map and adds it to the page. */
 function createMap() {
-  const map = new google.maps.Map(
-      document.getElementById('map'),
-      {center: {lat: 37.422, lng: -122.084}, zoom: 16, styles: [
+  var styleOptions = [
         {
             "featureType": "administrative.country",
             "elementType": "geometry.fill",
@@ -62,15 +60,84 @@ function createMap() {
                 "color": "#edf5ef"
             }
             ]
-        },
-        {
-            "featureType": "water",
-            "stylers": [
-            {
-                "color": "#05386b"
-            }
-            ]
         }
-        ]
+        ];
+  var info = {
+      "costa_rica": {
+          "lat": 9.932955,
+          "lng": -84.079496,
+          "title": "Costa Rica",
+          "description": "World Robot Olympiad took place here in 2017"
+      },
+      "china": {
+          "lat": 39.915149, 
+          "lng": 116.384680,
+          "title": "China",
+          "description": "World Adolescent Robot Contest took place here in 2015"
+      },
+      "qatar": {
+          "lat": 25.293616, 
+          "lng": 51.517145,
+          "title": "Qatar",
+          "description": "World Robot Olympiad took place here in 2015"
+      },
+      "tailand": {
+          "lat": 18.799605, 
+          "lng": 98.981883,
+          "title": "Thailand",
+          "description": "World Robot Olympiad took place here in 2018"
+      },
+      "india": {
+          "lat": 28.626527, 
+          "lng": 77.192504,
+          "title": "India",
+          "description": "World Robot Olympiad took place here in 2016"
+      },
+      "philippines": {
+          "lat": 10.292572, 
+          "lng": 123.961117,
+          "title": "Philippines",
+          "description": "World Robot Olympiad Friendship Invitational took place here in 2018"
+      },
+      "indonesia": {
+          "lat": -6.210629, 
+          "lng": 106.826769,
+          "title": "Indonesia",
+          "description": "World Robot Olympiad took place here in 2013"
+      }
+  }
+  const countryEl = document.getElementById('country');
+  const countryValue = countryEl.options[countryEl.selectedIndex].value;
+  var mapOptions = {
+  zoom: 8,
+  center: {lat:info[countryValue].lat, lng: info[countryValue].lng},
+  styles: styleOptions
+  };
+  const map = new google.maps.Map(
+      document.getElementById('map'),  
+      mapOptions
+  );
+  
+  for (var countryKey in info) {
+    addLandmark(
+      map, info[countryKey].lat, info[countryKey].lng, info[countryKey].title,
+      info[countryKey].description);
+  }
+  
+}
+
+
+/** Adds a marker that shows an info window when clicked. */
+function addLandmark(map, lat, lng, title, description) {
+  const marker = new google.maps.Marker({
+      position: {lat: lat, lng: lng}, 
+      map: map, 
+      title: title,
+      animation: google.maps.Animation.DROP,
     });
+
+  const infoWindow = new google.maps.InfoWindow({content: description});
+  marker.addListener('click', () => {
+    infoWindow.open(map, marker);
+  });
 }
