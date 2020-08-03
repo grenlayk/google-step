@@ -116,13 +116,13 @@ function createMap() {
   };
   const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-  for (const countryKey in info) {
-    addLandmark(
+  for ( const { lat, lng, title, description } of Object.values(info)) {
+      addLandmark(
       map,
-      info[countryKey].lat,
-      info[countryKey].lng,
-      info[countryKey].title,
-      info[countryKey].description
+      lat,
+      lng,
+      title,
+      description
     );
   }
 }
