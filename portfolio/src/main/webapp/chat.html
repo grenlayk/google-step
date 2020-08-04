@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="loadMessages()">
+  <body onload="loadMessages(); createForm(); getUser()">
     <div class="topnav">
         <a href="index.html">Home</a>
         <a href="about.html"> About</a>
@@ -34,22 +34,8 @@
         <option value="20">20</option>
       </select>
       
-      <p>Leave your message:</p>
-      <form action="/new-message" method="post" class="myform">
-        <ul class="myform">
-        <li>
-          <label for="name" class="myform">Your name:</label>
-          <input type="text" id="name" name="user_name" value="">
-        </li>
-        <li>
-          <label for="msg" class="myform">Message:</label>
-          <textarea id="msg" name="user_message">Hello!</textarea>
-        </li>
-        <br>
-        <button type="submit" class="myform">Send</button>
-        </ul>
-      </form>
-      <div id="warning-container"></div>
+      <div id="user"></div>
+      <div id="message-form"></div>
     </div>
 
   </body>

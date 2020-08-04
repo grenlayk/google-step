@@ -145,29 +145,82 @@ function addLandmark(map, lat, lng, title, description) {
 async function getUser() {
   const response = await fetch("/home");
   const {email, url} = await response.json();
+  createLogMessage(email, url);
+}
+
+function createLogMessage(email, url) {
   const userEl = document.getElementById("user");
+  userEl.appendChild(document.createElement("BR"))
 
   if (email) {
-    userEl.appendChild(createMyElement("Hi, " + email + "!", 'p'));
+    
+    userEl.appendChild(createMyElement("Hi, " + email + "!   ", 'bdi'));
 
-    const linkEl = document.createElement('p');
-    linkEl.appendChild(createMyElement("Click ", 'bdi'));
-    const link = createMyElement("here", 'a');
-    link.setAttribute('href', url);
-    linkEl.appendChild(link);
-    linkEl.appendChild(createMyElement(" to log out", 'bdi'));
+    const buttonEl = document.createElement('button');
+    const aEl = createMyElement("Log out", 'a');
+    aEl.setAttribute('href', url);
+    buttonEl.appendChild(aEl);
 
-    userEl.appendChild(linkEl);
+    userEl.appendChild(buttonEl);
 
+    createForm();
   } else {
-    userEl.appendChild(createMyElement("Hi, stranger !", 'p'));
-    const linkEl = document.createElement('p');
-    linkEl.appendChild(createMyElement("Please, log in ", 'bdi'));
-    const link = createMyElement("here", 'a');
-    link.setAttribute('href', url);
-    linkEl.appendChild(link);
+    userEl.appendChild(createMyElement("Hi, stranger!   ", 'bdi'));
 
-    userEl.appendChild(linkEl);
+    const buttonEl = document.createElement('button');
+    const aEl = createMyElement("Log in", 'a');
+    aEl.setAttribute('href', url);
+    buttonEl.appendChild(aEl);
+
+    userEl.appendChild(buttonEl);
+
+    clearForm();
   }
+  
+  //<button><a href="maps.html">Explore countries on a map</a></button>
 
 }
+
+function createForm() {
+
+    clearForm();
+    const sendMesEl = document.getElementById("message-form");
+    sendMesEl.appendChild(createMyElement("Leave your message:", 'p'));
+
+    const formEl = document.createElement("form");
+    formEl.setAttribute('action', "/new-message");
+    formEl.setAttribute('method', "post");
+    formEl.setAttribute('class', "myform");
+
+    const ulEl = document.createElement("ul");
+    const liEl = document.createElement("li");
+    const labelEl = createMyElement("Message:", "label");
+    const textEl = createMyElement("Hello!", "textarea");
+
+    ulEl.setAttribute('class', "myform");
+    labelEl.setAttribute('for', "msg");
+    labelEl.setAttribute('class', "myform");
+    textEl.setAttribute('id', "msg");
+    textEl.setAttribute('name', "user_message");
+
+    liEl.appendChild(labelEl);
+    liEl.appendChild(textEl);
+
+    const buttonEl = createMyElement("Send", "button");
+    buttonEl.setAttribute('type', "submit");
+    buttonEl.setAttribute('class', "myform");
+
+    ulEl.appendChild(liEl);
+    ulEl.appendChild(document.createElement('BR'));
+    ulEl.appendChild(buttonEl);
+    formEl.appendChild(ulEl);
+
+    sendMesEl.appendChild(formEl);
+}
+
+function clearForm() {
+    const sendMesEl = document.getElementById("message-form");
+    sendMesEl.innerHTML = '';
+}
+
+

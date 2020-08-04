@@ -34,14 +34,14 @@ public class HomeServlet extends HttpServlet {
     JSONObject user = new JSONObject();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlAfterLogOut = "/tests.html";
+      String urlAfterLogOut = "/chat.html";
       String logoutUrl = userService.createLogoutURL(urlAfterLogOut);
 
       user.put("email", userEmail);
       user.put("url", logoutUrl);
       
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/tests.html";
+      String urlToRedirectToAfterUserLogsIn = "/chat.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
       user.put("email", null);
