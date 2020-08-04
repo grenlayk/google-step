@@ -141,3 +141,9 @@ function addLandmark(map, lat, lng, title, description) {
     infoWindow.open(map, marker);
   });
 }
+
+async function getUser() {
+  const response = await fetch("/home");
+  const email = await response.json();
+
+}
