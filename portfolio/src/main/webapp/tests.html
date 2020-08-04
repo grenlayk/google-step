@@ -7,7 +7,7 @@
     <script src="script.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body>
+  <body onload="getUser()">
     <div class="topnav">
         <a href="index.html">Home</a>
         <a href="about.html"> About</a>
@@ -19,11 +19,7 @@
     <div id="content">
       <h1>Dev playground</h1>
       
-      <p>Click here to see a map:</p>
-      <button onclick="createMap()">Get a map!</button>
-      <br>
-      <p>There is a map:</p>
-      <div id="map"></div>
+      <div id="user"></div>
     </div>
   </body>
 </html>

@@ -144,6 +144,30 @@ function addLandmark(map, lat, lng, title, description) {
 
 async function getUser() {
   const response = await fetch("/home");
-  const email = await response.json();
+  const {email, url} = await response.json();
+  const userEl = document.getElementById("user");
+
+  if (email) {
+    userEl.appendChild(createMyElement("Hi, " + email + "!", 'p'));
+
+    const linkEl = document.createElement('p');
+    linkEl.appendChild(createMyElement("Click ", 'bdi'));
+    const link = createMyElement("here", 'a');
+    link.setAttribute('href', url);
+    linkEl.appendChild(link);
+    linkEl.appendChild(createMyElement(" to log out", 'bdi'));
+
+    userEl.appendChild(linkEl);
+
+  } else {
+    userEl.appendChild(createMyElement("Hi, stranger !", 'p'));
+    const linkEl = document.createElement('p');
+    linkEl.appendChild(createMyElement("Please, log in ", 'bdi'));
+    const link = createMyElement("here", 'a');
+    link.setAttribute('href', url);
+    linkEl.appendChild(link);
+
+    userEl.appendChild(linkEl);
+  }
 
 }
