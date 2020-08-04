@@ -3,24 +3,27 @@
   <head>
     <meta charset="UTF-8">
     <title>Dev playground</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0FR7vWT5PKPh-Sq95zAjcWXBFXRYl5xI"></script>
     <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
     <div class="topnav">
         <a href="index.html">Home</a>
         <a href="about.html"> About</a>
         <a href="chat.html">Chat</a>
-        <a class="active" href="tests.html">Dev playground</a>
         <a href="robotics.html">Robotics</a>
+        <a href="maps.html">Explore</a>
+        <a class="active" href="tests.html">Dev playground</a>
     </div>
     <div id="content">
       <h1>Dev playground</h1>
       
-      <p>Click here to see a message:</p>
-      <button onclick="loadMessages()">Get a message!</button>
+      <p>Click here to see a map:</p>
+      <button onclick="createMap()">Get a map!</button>
       <br>
-      <div id="users-messages"></div>
+      <p>There is a map:</p>
+      <div id="map"></div>
     </div>
   </body>
 </html>

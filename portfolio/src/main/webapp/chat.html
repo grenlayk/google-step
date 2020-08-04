@@ -11,8 +11,9 @@
         <a href="index.html">Home</a>
         <a href="about.html"> About</a>
         <a class="active" href="chat.html">Chat</a>
-        <a href="tests.html">Dev playground</a>
         <a href="robotics.html">Robotics</a>
+        <a href="maps.html">Explore</a>
+        <a href="tests.html">Dev playground</a>
     </div>
     <div id="content">
       <h1>Chat</h1>
@@ -23,14 +24,15 @@
       <hr>
       <form action="/delete-messages" method="post" >
           <button type="submit" class="myform">Delete messages</button>
-          <label for="max" >Choose a number of messages:</label>
-          <select class="select" name="max" id="max" onchange="loadMessages()">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-          
       </form>
+      <br>
+      
+      <label for="max" >Choose a number of messages:</label>
+      <select class="select" name="max" id="max" onchange="loadMessages()">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+      </select>
       
       <p>Leave your message:</p>
       <form action="/new-message" method="post" class="myform">
