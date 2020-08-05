@@ -26,26 +26,23 @@ import com.google.sps.data.UserMessageError;
  */
 public class UserMessage {
 
-  private String userName = "";
   private String userMessage = "Hello!";
+  private String userEmail = null;
   private long id = -1;
   private long timestamp = -1;
 
-  public UserMessage(String name, String message, long id, long timestamp) {
-      this.userName = htmlFilter(name);
+  public UserMessage(String message, String email, long id, long timestamp) {
       this.userMessage = htmlFilter(message);
+      this.userEmail = htmlFilter(email);
       this.id = id;
       this.timestamp = timestamp;
   }
 
-  public UserMessage(String name, String message) {
-      this(name, message, -1, -1);
+  public UserMessage(String message) {
+      this(message, null, -1, -1);
   }
 
   public UserMessageError check() {
-    if (userName == null || isEmpty(userName)) {
-      return new UserMessageError("Empty username field");
-    }
     if (userMessage == null || isEmpty(userMessage)) {
       return new UserMessageError("Empty message field");
     }

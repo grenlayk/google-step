@@ -23,7 +23,7 @@ async function loadMessages() {
   messagesEl.innerHTML = "";
   for (const message of serverMessages) {
     const curMessage = document.createElement("p");
-    curMessage.appendChild(createMyElement(message.userName + ": ", "b"));
+    curMessage.appendChild(createMyElement(message.userEmail + ": ", "b"));
     curMessage.appendChild(createMyElement(message.userMessage, "bdi"));
 
     messagesEl.appendChild(curMessage);
@@ -143,42 +143,33 @@ function addLandmark(map, lat, lng, title, description) {
 }
 
 async function getUser() {
-  const response = await fetch("/home");
-  const {email, url} = await response.json();
-  createLogMessage(email, url);
+  const response = await fetch("/user-info");
+  const {email, loginUrl, logoutUrl} = await response.json();
+  createLogMessage(email, loginUrl, logoutUrl);
 }
 
-function createLogMessage(email, url) {
+function createLogMessage(email, loginUrl, logoutUrl) {
   const userEl = document.getElementById("user");
-  userEl.appendChild(document.createElement("BR"))
+  userEl.appendChild(document.createElement("BR"));
+  const buttonEl = document.createElement('button');
 
   if (email) {
+    createForm();
     
     userEl.appendChild(createMyElement("Hi, " + email + "!   ", 'bdi'));
-
-    const buttonEl = document.createElement('button');
     const aEl = createMyElement("Log out", 'a');
-    aEl.setAttribute('href', url);
+    aEl.setAttribute('href', logoutUrl);
     buttonEl.appendChild(aEl);
-
     userEl.appendChild(buttonEl);
-
-    createForm();
   } else {
-    userEl.appendChild(createMyElement("Hi, stranger!   ", 'bdi'));
-
-    const buttonEl = document.createElement('button');
-    const aEl = createMyElement("Log in", 'a');
-    aEl.setAttribute('href', url);
-    buttonEl.appendChild(aEl);
-
-    userEl.appendChild(buttonEl);
-
     clearForm();
-  }
-  
-  //<button><a href="maps.html">Explore countries on a map</a></button>
 
+    userEl.appendChild(createMyElement("Hi, stranger!   ", 'bdi'));
+    const aEl = createMyElement("Log in", 'a');
+    aEl.setAttribute('href', loginUrl);
+    buttonEl.appendChild(aEl);
+  }
+  userEl.appendChild(buttonEl);
 }
 
 function createForm() {

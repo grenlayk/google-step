@@ -57,11 +57,11 @@ public class ListMessagesServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       if (messageNum < maxMessages) {
         long id = entity.getKey().getId();
-        String userName = (String) entity.getProperty("userName");
         String userMessage = (String) entity.getProperty("userMessage");
+        String userEmail = (String) entity.getProperty("userEmail");
         long timestamp = (long) entity.getProperty("timestamp");
 
-        UserMessage message = new UserMessage(userName, userMessage, id, timestamp);
+        UserMessage message = new UserMessage(userMessage, userEmail, id, timestamp);
         messages.add(message);
       }
       ++messageNum;

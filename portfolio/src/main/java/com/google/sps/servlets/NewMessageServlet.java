@@ -24,6 +24,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -35,11 +37,17 @@ public class NewMessageServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    String userName = request.getParameter("user_name");
+    UserService userService = UserServiceFactory.getUserService();
+    
+    if (!userService.isUserLoggedIn()) {
+        response.sendRedirect("/user-info");
+        return;
+    }
+
     String userMessage = request.getParameter("user_message");
     long timestamp = System.currentTimeMillis();
 
-    UserMessage curMessage = new UserMessage(userName, userMessage);
+    UserMessage curMessage = new UserMessage(userMessage);
     String logMessage = curMessage.check().getError();
 
     if (logMessage != null) {
@@ -47,12 +55,16 @@ public class NewMessageServlet extends HttpServlet {
 
       response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, logMessage);
     } else {
+      
+      String userEmail = userService.getCurrentUser().getEmail();
+
       Entity messageEntity = new Entity("userMessage");
-      messageEntity.setProperty("userName", userName);
       messageEntity.setProperty("userMessage", userMessage);
       messageEntity.setProperty("timestamp", timestamp);
+      messageEntity.setProperty("userEmail", userEmail);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      
       datastore.put(messageEntity);
 
       // Redirect back to the HTML page.

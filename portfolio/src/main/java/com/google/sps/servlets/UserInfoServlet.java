@@ -23,32 +23,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
-@WebServlet("/home")
-public class HomeServlet extends HttpServlet {
+@WebServlet("/user-info")
+public class UserInfoServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
 
     UserService userService = UserServiceFactory.getUserService();
-    JSONObject user = new JSONObject();
+    JSONObject userInfo = new JSONObject();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
       String urlAfterLogOut = "/chat.html";
       String logoutUrl = userService.createLogoutURL(urlAfterLogOut);
 
-      user.put("email", userEmail);
-      user.put("url", logoutUrl);
+      userInfo.put("email", userEmail);
+      userInfo.put("loginUrl", null);
+      userInfo.put("logoutUrl", logoutUrl);
       
     } else {
       String urlToRedirectToAfterUserLogsIn = "/chat.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      user.put("email", null);
-      user.put("url", loginUrl);
+      userInfo.put("email", null);
+      userInfo.put("loginUrl", loginUrl);
+      userInfo.put("logoutUrl", null);
     }
 
-    response.getWriter().println(user);
-
+    response.getWriter().println(userInfo);
   }
 }
