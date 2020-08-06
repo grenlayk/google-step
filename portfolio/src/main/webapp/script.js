@@ -20,7 +20,7 @@ async function loadMessages() {
   const serverMessages = await response.json();
 
   const newResponse = await fetch("/user-info");
-  const {email, loginUrl, logoutUrl} = await newResponse.json();
+  const { email, loginUrl, logoutUrl } = await newResponse.json();
 
   const allMessages = document.getElementById("users-messages");
   allMessages.innerHTML = "";
@@ -31,39 +31,33 @@ async function loadMessages() {
 }
 
 function createMessageElement(message, userEmail) {
-    const messageElement = document.createElement('li');
-    const curMessage = document.createElement("p");
-    curMessage.appendChild(createMyElement(message.userEmail + ": ", "b"));
-    curMessage.appendChild(createMyElement(message.userMessage, "bdi"));
+  const messageElement = document.createElement("li");
+  const curMessage = document.createElement("p");
+  curMessage.appendChild(createMyElement(message.userEmail + ": ", "b"));
+  curMessage.appendChild(createMyElement(message.userMessage, "bdi"));
 
-    console.log("mes: " + message.userEmail);
-    console.log("cur:" + userEmail);
+  if (message.userEmail == userEmail) {
+    const deleteButtonElement = document.createElement("button");
+    deleteButtonElement.innerText = "Delete";
+    deleteButtonElement.addEventListener("click", () => {
+      deleteMessage(message);
+      loadMessages();
+    });
+    deleteButtonElement.setAttribute("id", "right");
 
-    if (message.userEmail == userEmail) {
-        const deleteButtonElement = document.createElement('button');
-        deleteButtonElement.innerText = 'Delete';
-        deleteButtonElement.addEventListener('click', () => {
-        deleteMessage(message);
-        loadMessages();
-        });
-        deleteButtonElement.setAttribute('id', "right");
+    curMessage.appendChild(deleteButtonElement);
+  }
 
-        curMessage.appendChild(deleteButtonElement);
-    }
+  messageElement.appendChild(curMessage);
 
-    messageElement.appendChild(curMessage);
-
-    return messageElement;
+  return messageElement;
 }
-
 
 function deleteMessage(message) {
   const params = new URLSearchParams();
-  params.append('id', message.id);
-  params.append('userEmail', message.userEmail);
-  fetch('/delete-message', {method: 'POST', body: params});
+  params.append("id", message.id);
+  fetch("/delete-message", { method: "POST", body: params });
 }
-
 
 function createMyElement(text, type) {
   const element = document.createElement(type);
@@ -147,14 +141,8 @@ function createMap() {
   };
   const map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-  for ( const { lat, lng, title, description } of Object.values(info)) {
-      addLandmark(
-      map,
-      lat,
-      lng,
-      title,
-      description
-    );
+  for (const { lat, lng, title, description } of Object.values(info)) {
+    addLandmark(map, lat, lng, title, description);
   }
 }
 
@@ -175,76 +163,74 @@ function addLandmark(map, lat, lng, title, description) {
 
 async function getUser() {
   const response = await fetch("/user-info");
-  const {email, loginUrl, logoutUrl} = await response.json();
+  const { email, loginUrl, logoutUrl } = await response.json();
   createLogMessage(email, loginUrl, logoutUrl);
   return email;
 }
 
 function createLogMessage(email, loginUrl, logoutUrl) {
   const userEl = document.getElementById("user");
-  userEl.innerHTML = '';
+  userEl.innerHTML = "";
   userEl.appendChild(document.createElement("BR"));
-  const buttonEl = document.createElement('button');
+  const buttonEl = document.createElement("button");
+  buttonEl.setAttribute("id", "right");
 
   if (email) {
     createForm();
-    
-    userEl.appendChild(createMyElement("Hi, " + email + "!   ", 'bdi'));
-    const aEl = createMyElement("Log out", 'a');
-    aEl.setAttribute('href', logoutUrl);
+
+    userEl.appendChild(createMyElement("Hi, " + email + "!   ", "bdi"));
+    const aEl = createMyElement("Log out", "a");
+    aEl.setAttribute("href", logoutUrl);
     buttonEl.appendChild(aEl);
     userEl.appendChild(buttonEl);
   } else {
     clearForm();
 
-    userEl.appendChild(createMyElement("Hi, stranger!   ", 'bdi'));
-    const aEl = createMyElement("Log in", 'a');
-    aEl.setAttribute('href', loginUrl);
+    userEl.appendChild(createMyElement("Hi, stranger!   ", "bdi"));
+    const aEl = createMyElement("Log in", "a");
+    aEl.setAttribute("href", loginUrl);
     buttonEl.appendChild(aEl);
   }
   userEl.appendChild(buttonEl);
 }
 
 function createForm() {
+  clearForm();
+  const sendMesEl = document.getElementById("message-form");
+  sendMesEl.appendChild(createMyElement("Leave your message:", "p"));
 
-    clearForm();
-    const sendMesEl = document.getElementById("message-form");
-    sendMesEl.appendChild(createMyElement("Leave your message:", 'p'));
+  const formEl = document.createElement("form");
+  formEl.setAttribute("action", "/new-message");
+  formEl.setAttribute("method", "post");
+  formEl.setAttribute("class", "myform");
 
-    const formEl = document.createElement("form");
-    formEl.setAttribute('action', "/new-message");
-    formEl.setAttribute('method', "post");
-    formEl.setAttribute('class', "myform");
+  const ulEl = document.createElement("ul");
+  const liEl = document.createElement("li");
+  const labelEl = createMyElement("Message:", "label");
+  const textEl = createMyElement("Hello!", "textarea");
 
-    const ulEl = document.createElement("ul");
-    const liEl = document.createElement("li");
-    const labelEl = createMyElement("Message:", "label");
-    const textEl = createMyElement("Hello!", "textarea");
+  ulEl.setAttribute("class", "myform");
+  labelEl.setAttribute("for", "msg");
+  labelEl.setAttribute("class", "myform");
+  textEl.setAttribute("id", "msg");
+  textEl.setAttribute("name", "user_message");
 
-    ulEl.setAttribute('class', "myform");
-    labelEl.setAttribute('for', "msg");
-    labelEl.setAttribute('class', "myform");
-    textEl.setAttribute('id', "msg");
-    textEl.setAttribute('name', "user_message");
+  liEl.appendChild(labelEl);
+  liEl.appendChild(textEl);
 
-    liEl.appendChild(labelEl);
-    liEl.appendChild(textEl);
+  const buttonEl = createMyElement("Send", "button");
+  buttonEl.setAttribute("type", "submit");
+  buttonEl.setAttribute("class", "myform");
 
-    const buttonEl = createMyElement("Send", "button");
-    buttonEl.setAttribute('type', "submit");
-    buttonEl.setAttribute('class', "myform");
+  ulEl.appendChild(liEl);
+  ulEl.appendChild(document.createElement("BR"));
+  ulEl.appendChild(buttonEl);
+  formEl.appendChild(ulEl);
 
-    ulEl.appendChild(liEl);
-    ulEl.appendChild(document.createElement('BR'));
-    ulEl.appendChild(buttonEl);
-    formEl.appendChild(ulEl);
-
-    sendMesEl.appendChild(formEl);
+  sendMesEl.appendChild(formEl);
 }
 
 function clearForm() {
-    const sendMesEl = document.getElementById("message-form");
-    sendMesEl.innerHTML = '';
+  const sendMesEl = document.getElementById("message-form");
+  sendMesEl.innerHTML = "";
 }
-
-

@@ -34,25 +34,33 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 
 @WebServlet("/delete-message")
-public class DeleteMessagesServlet extends HttpServlet {
+public class DeleteMessageServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     Long id = Long.parseLong(request.getParameter("id"));
-    String messageUserEmail = request.getParameter("userEmail");
+    String messageUserEmail = null;
 
     Key messageEntityKey = KeyFactory.createKey("userMessage", id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
 
+    try {
+        Entity message = datastore.get(messageEntityKey);
+        messageUserEmail = (String) message.getProperty("userEmail");
+    } catch (EntityNotFoundException e){
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "No such message in datastore");
+        return;
+    }
+
     if (!userService.isUserLoggedIn())  {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().println("You should log in to delete messages");
-        //response.sendRedirect("/user-info");
         return;
     }
 
