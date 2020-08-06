@@ -34,7 +34,7 @@ public class UserInfoServlet extends HttpServlet {
     JSONObject userInfo = new JSONObject();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlAfterLogOut = "/chat.html";
+      final String urlAfterLogOut = "/chat.html";
       String logoutUrl = userService.createLogoutURL(urlAfterLogOut);
 
       userInfo.put("email", userEmail);
@@ -42,7 +42,7 @@ public class UserInfoServlet extends HttpServlet {
       userInfo.put("logoutUrl", logoutUrl);
       
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/chat.html";
+      final String urlToRedirectToAfterUserLogsIn = "/chat.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
       userInfo.put("email", null);

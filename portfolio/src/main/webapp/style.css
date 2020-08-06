@@ -4,6 +4,7 @@
   width: 650px;
   line-height: 1.5;
   font-size: 16px;
+  position: relative;
 }
 
 body {
@@ -89,11 +90,6 @@ ul.myform {
   margin: 0;
 }
 
-form li + li {
-  margin-top: 1em;
-}
-
-
 label.myform
 {
    display: inline;
@@ -136,11 +132,15 @@ button {
   background-color: #5CDB95;
   border: none;
   color: #EDF5EF;
-  padding: 15px 32px;
+  padding: 10px 32px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+}
+
+#right {
+  float: right;
 }
 
 button a:hover {

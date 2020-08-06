@@ -45,7 +45,7 @@ public class NewMessageServlet extends HttpServlet {
     }
 
     String userMessage = request.getParameter("user_message");
-    long timestamp = System.currentTimeMillis();
+    Long timestamp = System.currentTimeMillis();
 
     UserMessage curMessage = new UserMessage(userMessage);
     String logMessage = curMessage.check().getError();

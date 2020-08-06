@@ -19,20 +19,51 @@ async function loadMessages() {
   const response = await fetch("/list-messages?max_messages=" + maxText);
   const serverMessages = await response.json();
 
-  const messagesEl = document.getElementById("users-messages");
-  messagesEl.innerHTML = "";
+  const newResponse = await fetch("/user-info");
+  const {email, loginUrl, logoutUrl} = await newResponse.json();
+
+  const allMessages = document.getElementById("users-messages");
+  allMessages.innerHTML = "";
+
   for (const message of serverMessages) {
+    allMessages.appendChild(createMessageElement(message, email));
+  }
+}
+
+function createMessageElement(message, userEmail) {
+    const messageElement = document.createElement('li');
     const curMessage = document.createElement("p");
     curMessage.appendChild(createMyElement(message.userEmail + ": ", "b"));
     curMessage.appendChild(createMyElement(message.userMessage, "bdi"));
 
-    messagesEl.appendChild(curMessage);
-  }
+    console.log("mes: " + message.userEmail);
+    console.log("cur:" + userEmail);
+
+    if (message.userEmail == userEmail) {
+        const deleteButtonElement = document.createElement('button');
+        deleteButtonElement.innerText = 'Delete';
+        deleteButtonElement.addEventListener('click', () => {
+        deleteMessage(message);
+        loadMessages();
+        });
+        deleteButtonElement.setAttribute('id', "right");
+
+        curMessage.appendChild(deleteButtonElement);
+    }
+
+    messageElement.appendChild(curMessage);
+
+    return messageElement;
 }
 
-async function deleteMessages() {
-  const response = await fetch("/delete-messages");
+
+function deleteMessage(message) {
+  const params = new URLSearchParams();
+  params.append('id', message.id);
+  params.append('userEmail', message.userEmail);
+  fetch('/delete-message', {method: 'POST', body: params});
 }
+
 
 function createMyElement(text, type) {
   const element = document.createElement(type);
@@ -146,10 +177,12 @@ async function getUser() {
   const response = await fetch("/user-info");
   const {email, loginUrl, logoutUrl} = await response.json();
   createLogMessage(email, loginUrl, logoutUrl);
+  return email;
 }
 
 function createLogMessage(email, loginUrl, logoutUrl) {
   const userEl = document.getElementById("user");
+  userEl.innerHTML = '';
   userEl.appendChild(document.createElement("BR"));
   const buttonEl = document.createElement('button');
 

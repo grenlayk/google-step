@@ -20,12 +20,8 @@
       <p> Users' messages:
       <p>
       <hr>
-      <div id="users-messages"> </div>
+      <ul id="users-messages"> </ul>
       <hr>
-      <form action="/delete-messages" method="post" >
-          <button type="submit" class="myform">Delete messages</button>
-      </form>
-      <br>
       
       <label for="max" >Choose a number of messages:</label>
       <select class="select" name="max" id="max" onchange="loadMessages()">

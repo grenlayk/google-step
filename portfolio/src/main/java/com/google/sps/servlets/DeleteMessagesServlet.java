@@ -32,22 +32,36 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 
-@WebServlet("/delete-messages")
+@WebServlet("/delete-message")
 public class DeleteMessagesServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("userMessage").addSort("timestamp", SortDirection.DESCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
 
-    for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      Key messageEntityKey = KeyFactory.createKey("userMessage", id);
+    Long id = Long.parseLong(request.getParameter("id"));
+    String messageUserEmail = request.getParameter("userEmail");
+
+    Key messageEntityKey = KeyFactory.createKey("userMessage", id);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+
+    if (!userService.isUserLoggedIn())  {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().println("You should log in to delete messages");
+        //response.sendRedirect("/user-info");
+        return;
+    }
+
+    String userEmail = userService.getCurrentUser().getEmail();
+
+    if (userEmail.equals(messageUserEmail)) {
       datastore.delete(messageEntityKey);
     }
+
     response.sendRedirect("/chat.html");
   }
 }

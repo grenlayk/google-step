@@ -26,12 +26,12 @@ import com.google.sps.data.UserMessageError;
  */
 public class UserMessage {
 
-  private String userMessage = "Hello!";
-  private String userEmail = null;
-  private long id = -1;
-  private long timestamp = -1;
+  private final String userMessage;
+  private final String userEmail;
+  private final Long id;
+  private final Long timestamp;
 
-  public UserMessage(String message, String email, long id, long timestamp) {
+  public UserMessage(String message, String email, Long id, Long timestamp) {
       this.userMessage = htmlFilter(message);
       this.userEmail = htmlFilter(email);
       this.id = id;
@@ -39,7 +39,7 @@ public class UserMessage {
   }
 
   public UserMessage(String message) {
-      this(message, null, -1, -1);
+      this(message, null, null, null);
   }
 
   public UserMessageError check() {
