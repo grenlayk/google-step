@@ -32,22 +32,44 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 
-@WebServlet("/delete-messages")
-public class DeleteMessagesServlet extends HttpServlet {
+@WebServlet("/delete-message")
+public class DeleteMessageServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("userMessage").addSort("timestamp", SortDirection.DESCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
 
-    for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      Key messageEntityKey = KeyFactory.createKey("userMessage", id);
+    Long id = Long.parseLong(request.getParameter("id"));
+    String messageUserEmail = null;
+
+    Key messageEntityKey = KeyFactory.createKey("userMessage", id);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    UserService userService = UserServiceFactory.getUserService();
+
+    try {
+        Entity message = datastore.get(messageEntityKey);
+        messageUserEmail = (String) message.getProperty("userEmail");
+    } catch (EntityNotFoundException e){
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "No such message in datastore");
+        return;
+    }
+
+    if (!userService.isUserLoggedIn())  {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().println("You should log in to delete messages");
+        return;
+    }
+
+    String userEmail = userService.getCurrentUser().getEmail();
+
+    if (userEmail.equals(messageUserEmail)) {
       datastore.delete(messageEntityKey);
     }
+
     response.sendRedirect("/chat.html");
   }
 }

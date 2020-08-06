@@ -18,7 +18,7 @@ import java.lang.String;
 
 public class UserMessageError {
 
-  private String errorMessage = "OK";
+  private final String errorMessage;
 
   public UserMessageError(String error) {
       this.errorMessage = error;
