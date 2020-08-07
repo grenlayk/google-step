@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Comparator;
 
 /**
  * Event is the container class for when a specific group of people are meeting and are therefore
@@ -93,4 +94,24 @@ public final class Event {
     // interface documentation, equals will check for set-equality across all set implementations.
     return a.title.equals(b.title) && a.when.equals(b.when) && a.attendees.equals(b.attendees);
   }
+
+  /**
+   * A comparator for sorting ranges by their start time in ascending order.
+   */
+  public static final Comparator<Event> ORDER_BY_START = new Comparator<Event>() {
+    @Override
+    public int compare(Event a, Event b) {
+      return Long.compare(a.when.start(), b.when.start());
+    }
+  };
+
+  /**
+   * A comparator for sorting ranges by their end time in ascending order.
+   */
+  public static final Comparator<Event> ORDER_BY_END = new Comparator<Event>() {
+    @Override
+    public int compare(Event a, Event b) {
+      return Long.compare(a.when.end(), b.when.end());
+    }
+  };
 }
