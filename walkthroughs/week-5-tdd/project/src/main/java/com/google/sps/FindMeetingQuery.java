@@ -21,16 +21,16 @@ import java.util.ArrayList;
 import com.google.sps.Event;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Comparator;
 
 public final class FindMeetingQuery {
-  public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    ArrayList<Event> copy = new ArrayList<>(events);
-    ArrayList<Event> relativeEvents = leaveRelative(copy, request);
-    Collections.sort(relativeEvents, Event.ORDER_BY_START);
+  public Collection<TimeRange> query(Collection<Event> allEvents, MeetingRequest request) {
+    ArrayList<Event> relatedEvents = leaveRelated(allEvents, request);
+    relatedEvents.sort(Comparator.comparing(event -> event.getWhen().start()));
     int endOfLast = TimeRange.START_OF_DAY;
     
     ArrayList<TimeRange> availableSlots = new ArrayList<TimeRange> ();
-    for (Event event : relativeEvents) {
+    for (Event event : relatedEvents) {
         if (event.getWhen().start() - endOfLast >= request.getDuration()) {
             availableSlots.add(TimeRange.fromStartEnd(endOfLast, event.getWhen().start(), false));
         }
@@ -44,15 +44,14 @@ public final class FindMeetingQuery {
     return availableSlots;
   }
 
-  public ArrayList<Event> leaveRelative(ArrayList<Event> events, MeetingRequest request) {
-      ArrayList<Event> allEvents = new ArrayList<>(events);
-      ArrayList<Event> relativeEvents = new ArrayList<>();
+  public ArrayList<Event> leaveRelated(Collection<Event> allEvents, MeetingRequest request) {
+      ArrayList<Event> relatedEvents = new ArrayList<>();
       for (Event event : allEvents) {
           if (!intersection(event.getAttendees(), request.getAttendees()).isEmpty()) {
-              relativeEvents.add(event);
+              relatedEvents.add(event);
           }
       }
-      return relativeEvents;
+      return relatedEvents;
   }
 
   Set<String> intersection(Collection<String> event, Collection<String> request) {
