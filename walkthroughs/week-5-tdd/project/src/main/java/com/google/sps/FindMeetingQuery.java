@@ -26,15 +26,15 @@ import java.util.stream.Collectors;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> allEvents, MeetingRequest request) {
-    Collection<TimeRange> queryWithOptional = prepareQuery(allEvents, request, true);
+    Collection<TimeRange> queryWithOptional = processQuery(allEvents, request, true);
     if (!queryWithOptional.isEmpty()) {
         return queryWithOptional;
     } else {
-        return prepareQuery(allEvents, request, false);
+        return processQuery(allEvents, request, false);
     }
   }
 
-  public Collection<TimeRange> prepareQuery(Collection<Event> allEvents, MeetingRequest request, boolean withOptional) {
+  public Collection<TimeRange> processQuery(Collection<Event> allEvents, MeetingRequest request, boolean withOptional) {
     ArrayList<Event> relatedEvents = leaveRelated(allEvents, request, withOptional);
     relatedEvents.sort(Comparator.comparing(event -> event.getWhen().start()));
     int endOfLast = TimeRange.START_OF_DAY;
@@ -55,13 +55,10 @@ public final class FindMeetingQuery {
   }
 
 
-  public ArrayList<Event> leaveRelated(Collection<Event> allEvents, MeetingRequest request, boolean withOptional) {
-      ArrayList<Event> relatedEvents = new ArrayList<>();
-      for (Event event : allEvents) {
-          if (doIntersect(event.getAttendees(), request, withOptional)) {
-             relatedEvents.add(event);
-          }
-      }
+  public ArrayList<Event> leaveRelated(Collection<Event> allEvents, final MeetingRequest request, final boolean withOptional) {
+      ArrayList<Event> relatedEvents = allEvents.stream()
+      .filter(event -> doIntersect(event.getAttendees(), request, withOptional))
+      .collect(Collectors.toCollection(ArrayList::new));
       return relatedEvents;
   }
 
