@@ -22,10 +22,20 @@ import com.google.sps.Event;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> allEvents, MeetingRequest request) {
-    ArrayList<Event> relatedEvents = leaveRelated(allEvents, request);
+    Collection<TimeRange> queryWithOptional = prepareQuery(allEvents, request, true);
+    if (!queryWithOptional.isEmpty()) {
+        return queryWithOptional;
+    } else {
+        return prepareQuery(allEvents, request, false);
+    }
+  }
+
+  public Collection<TimeRange> prepareQuery(Collection<Event> allEvents, MeetingRequest request, boolean withOptional) {
+    ArrayList<Event> relatedEvents = leaveRelated(allEvents, request, withOptional);
     relatedEvents.sort(Comparator.comparing(event -> event.getWhen().start()));
     int endOfLast = TimeRange.START_OF_DAY;
     
@@ -44,20 +54,26 @@ public final class FindMeetingQuery {
     return availableSlots;
   }
 
-  public ArrayList<Event> leaveRelated(Collection<Event> allEvents, MeetingRequest request) {
+
+  public ArrayList<Event> leaveRelated(Collection<Event> allEvents, MeetingRequest request, boolean withOptional) {
       ArrayList<Event> relatedEvents = new ArrayList<>();
       for (Event event : allEvents) {
-          if (!intersection(event.getAttendees(), request.getAttendees()).isEmpty()) {
-              relatedEvents.add(event);
+          if (doIntersect(event.getAttendees(), request, withOptional)) {
+             relatedEvents.add(event);
           }
       }
       return relatedEvents;
   }
 
-  Set<String> intersection(Collection<String> event, Collection<String> request) {
-    Set<String> intersection = new HashSet<String>(event); 
-    Set<String> requestSet = new HashSet<String>(request); 
-    intersection.retainAll(requestSet);
-    return intersection;
+  boolean doIntersect(Collection<String> eventAttendees, MeetingRequest request, boolean withOptional) {
+    Set<String> intersection = new HashSet<String>(eventAttendees); 
+    Set<String> requestOptional = new HashSet<String>(request.getOptionalAttendees()); 
+    Set<String> requestAttendees = new HashSet<String>(request.getAttendees());
+
+    if (withOptional) {
+        requestAttendees.addAll(requestOptional);
+    }
+
+    return !Collections.disjoint(eventAttendees, requestAttendees);
   }
 }
